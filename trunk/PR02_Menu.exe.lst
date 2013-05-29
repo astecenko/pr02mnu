@@ -1,0 +1,20 @@
+Учет укомплектованности изделий производственного плана
+По вопросам работы комплекса обращаться в отдел АСУП НЭВЗа по телефону 21-66
+\\nevz\nevz\ASUP_Data1\BD-ASU\NET\LOG\
+-|Базы данных
+--|Калькулятор|calc.exe
+--|Карточка|mainkart.exe \\nevz\nevz\workshop\ 1
+--|Укомплектованность|mainucom.exe \\nevz\nevz\workshop\ 1
+--|Применяемость и конструкторские изменения
+---|Состав узла|razuz.exe \\nevz\nevz\workshop\
+--|Просмотр накладных|p_nakl.exe \\nevz\nevz\workshop\
+-|Дефицит
+--|Дефицитные позиции цеха|def_poz.exe \\nevz\nevz\workshop\
+--|График дефицита по машинам|defic.exe \\nevz\nevz\workshop\
+--|График дефицита по машинам(по датам)|def_data.exe \\nevz\nevz\workshop\
+--|График дефицита по распоряжениям(код 200)|d200.exe \\nevz\nevz\workshop\
+--|График дефицита по распоряжениям|d1_rasp.exe \\nevz\nevz\workshop\
+--|Общий график дефицита цеха|def_all.exe \\nevz\nevz\workshop\
+--|Дефицит позиций, входящих в узел|def_uzl.exe \\nevz\nevz\workshop\
+--|Дефицит позиций по кодам, входящих в узлы|def_uz_o.exe \\nevz\nevz\workshop\
+-|Дефицит|command.com
