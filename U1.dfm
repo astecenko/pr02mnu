@@ -3,7 +3,7 @@ object FormZapuskatr1: TFormZapuskatr1
   Left = 368
   Top = 73
   Anchors = [akTop, akRight]
-  BorderStyle = bsSingle
+  BorderStyle = bsDialog
   Caption = 'FormZapuskatr1'
   ClientHeight = 453
   ClientWidth = 367

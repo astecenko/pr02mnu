@@ -42,7 +42,7 @@ type
     procedure StartPr(); //запуск программы
     procedure HelpMsg(); //помощь
     procedure ShowParent();
-    procedure Start(s: string);
+    procedure Start(const s: string);
     procedure ProgramRuned(s3: string);
   end;
   Nastroiki = record
@@ -50,6 +50,7 @@ type
     iOrder: Integer;
     sText: string;
     sCmd: string;
+    sType:string;
   end;
   TNastroiki = ^Nastroiki;
 const
@@ -140,7 +141,7 @@ begin
   end;
 end;
 
-procedure TFormZapuskatr1.Start(s: string);
+procedure TFormZapuskatr1.Start(const s: string);
 var
   si: TStartupInfo;
   p: TProcessInformation;
@@ -151,24 +152,24 @@ begin
   with Si do
   begin
     cb := SizeOf(Si);
-    dwFlags := startf_UseShowWindow;
-    wShowWindow := SW_SHOWNORMAL;
+    dwFlags := STARTF_USESHOWWINDOW;
+    wShowWindow := SW_HIDE;
   end;
   //Form1.WindowState:=wsMinimized;
   ShowWindow(Application.Handle, SW_HIDE);
   Self.Hide;
   WriteLog('RUN ' + s);
   if Createprocess(nil, PAnsiChar(s), nil, nil, false,
-    Create_default_error_mode, nil, nil, si, p) then
+    CREATE_DEFAULT_ERROR_MODE or CREATE_NO_WINDOW, nil, nil, si, p) then
   begin
-    if Waitforsingleobject(p.hProcess, 28800000) = WAIT_TIMEOUT then
+    if Waitforsingleobject(p.hProcess,  INFINITE) = WAIT_TIMEOUT then
       //28800000 = 8 часов
     begin
       b := False;
       WriteLog('TIMESTOP ' + s);
       TerminateProcess(p.hProcess, 5);
       MessageBox(0,
-        'За 8 часов Вы не успели завершить работу,'#13'произошло автоматическое экстренное завершение программы!'#13'Это могло повлечь за собой порчу либо потерю данных!'#13'Рекомендуется не оставлять работающей программу на ночь!',
+        'За 48 часов Вы не успели завершить работу,'#13'произошло автоматическое экстренное завершение программы!'#13'Это могло повлечь за собой порчу либо потерю данных!'#13'Рекомендуется не оставлять работающей программу на ночь!',
         'Экстренное завершение', MB_ICONERROR or MB_OK);
     end
   end
@@ -298,8 +299,7 @@ begin
   while i < lNastr.Count - 1 do
   begin
     //      TNastroiki(lNastr.Items[i])^.iParent:=j;
-    if (TNastroiki(lNastr.Items[i])^.iOrder = 1) and (TNastroiki(lNastr.Items[i
-      + 1])^.iOrder = 1) then
+    if (TNastroiki(lNastr.Items[i])^.iOrder = 1) and ((TNastroiki(lNastr.Items[i + 1])^.iOrder = 1) or (TNastroiki(lNastr.Items[i + 1])^.iOrder = 0)) then
     begin
       TNastroiki(lNastr.Items[i])^.iParent := -1;
       j := i;
@@ -445,10 +445,15 @@ begin
         New(pNastr);
         pNastr^.iOrder := Length(sT.Strings[0]);
         pNastr^.sText := sT.Strings[1];
+        pNastr^.sType := 'win';
         if sT.Count < 3 then
           pNastr^.sCmd := '0'
         else
-          pNastr^.sCmd := sT.Strings[2];
+          begin
+            pNastr^.sCmd := sT.Strings[2];
+            if sT.Count=4 then
+              pNastr^.sType := LowerCase(sT.Strings[3]);
+          end;
         pNastr^.iParent := -1;
         lNastr.Add(pNastr);
       end; // при выходе имеем заполненый список указателей lNastr
@@ -560,4 +565,3 @@ begin
 end;
 
 end.
-
